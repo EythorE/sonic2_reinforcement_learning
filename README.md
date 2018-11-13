@@ -6,7 +6,7 @@ Final project for the course Deep Learning at University of Iceland.
 
 ## Example videos
 Previous version after 10h of training:  
-[![youtube_v1](https://j.gifs.com/Yvj9pW.gif)](https://youtu.be/mKLSF36KtOY)
+[![youtube_v1](gifs.com/gif/sonic-the-hedgehog-2-dqn-after-6-days-4Rly8J)](https://youtu.be/mKLSF36KtOY)
 
 Couple of modifications were made to the environment and hyper-parameters were re-tuned:
 
@@ -15,8 +15,8 @@ chosen action over the next 19 unseen frames.
 
 • The environment terminated after 90 seconds instead of the default 10 minutes.
 Modified version after 48h of training:   
-[![youtube_v2](https://j.gifs.com/jqE9QB.gif)](https://youtu.be/FdN4oRy5g6E)  
-[![youtube_v2](https://gifs.com/gif/sonic-the-hedgehog-2-v-2-dqn-after-48-hours-of-training-Yvj9pW)](https://youtu.be/FdN4oRy5g6E)
+[![youtube_v2](gifs.com/gif/sonic-the-hedgehog-2-v-2-dqn-after-48-hours-of-training-Xog96V)](https://youtu.be/FdN4oRy5g6E)  
+
 
 ## Prerequisites
 Python 3 
