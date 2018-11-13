@@ -15,7 +15,7 @@ chosen action over the next 19 unseen frames.
 
 • The environment terminated after 90 seconds instead of the default 10 minutes.
 Modified version after 48h of training:  
-[![Demo Doccou alpha](https://share.gifyoutube.com/KzB6Gb.gif](https://youtu.be/FdN4oRy5g6E)
+[![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)  
 [![Demo Doccou alpha](https://j.gifs.com/jqE9QB.gif)](https://youtu.be/FdN4oRy5g6E)
 
 ## Prerequisites
