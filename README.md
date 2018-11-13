@@ -14,8 +14,7 @@ Couple of modifications were made to the environment and hyper-parameters were r
 chosen action over the next 19 unseen frames.
 
 • The environment terminated after 90 seconds instead of the default 10 minutes.
-Modified version after 48h of training:  
-[![Demo Doccou alpha](http://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)  
+Modified version after 48h of training:   
 [![youtube_v2](https://j.gifs.com/jqE9QB.gif)](https://youtu.be/FdN4oRy5g6E)
 
 ## Prerequisites
