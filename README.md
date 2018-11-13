@@ -15,7 +15,8 @@ chosen action over the next 19 unseen frames.
 
 • The environment terminated after 90 seconds instead of the default 10 minutes.
 Modified version after 48h of training:   
-[![youtube_v2](https://j.gifs.com/jqE9QB.gif)](https://youtu.be/FdN4oRy5g6E)
+[![youtube_v2](https://j.gifs.com/jqE9QB.gif)](https://youtu.be/FdN4oRy5g6E)  
+[![youtube_v2](https://gifs.com/gif/sonic-the-hedgehog-2-v-2-dqn-after-48-hours-of-training-Yvj9pW)](https://youtu.be/FdN4oRy5g6E)
 
 ## Prerequisites
 Python 3 
