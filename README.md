@@ -6,7 +6,7 @@ Final project for the course Deep Learning at University of Iceland.
 
 ## Example videos
 Previous version after 10h of training:  
-[![Demo Doccou alpha](https://j.gifs.com/Yvj9pW.gif)](https://youtu.be/mKLSF36KtOY)
+[![youtube_v1](https://j.gifs.com/Yvj9pW.gif)](https://youtu.be/mKLSF36KtOY)
 
 Couple of modifications were made to the environment and hyper-parameters were re-tuned:
 
@@ -15,8 +15,8 @@ chosen action over the next 19 unseen frames.
 
 • The environment terminated after 90 seconds instead of the default 10 minutes.
 Modified version after 48h of training:  
-[![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)  
-[![Demo Doccou alpha](https://j.gifs.com/jqE9QB.gif)](https://youtu.be/FdN4oRy5g6E)
+[![Demo Doccou alpha](http://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=ek1j272iAmc)  
+[![youtube_v2](https://j.gifs.com/jqE9QB.gif)](https://youtu.be/FdN4oRy5g6E)
 
 ## Prerequisites
 Python 3 
