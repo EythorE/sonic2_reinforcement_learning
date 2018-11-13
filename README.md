@@ -6,7 +6,9 @@ Final project for the course Deep Learning at University of Iceland.
 
 ## Example videos
 Previous version after 10h of training:  
-[![youtube_v1](<iframe src='//gifs.com/embed/sonic-the-hedgehog-2-dqn-after-6-days-4Rly8J' frameborder='0' scrolling='no' width='320px' height='224px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>)](https://youtu.be/mKLSF36KtOY)
+[![youtube_v1](<iframe src='//gifs.com/embed/sonic-the-hedgehog-2-dqn-after-6-days-4Rly8J' frameborder='0' scrolling='no' width='320px' height='224px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>)](https://youtu.be/mKLSF36KtOY)  
+
+<iframe src='//gifs.com/embed/sonic-the-hedgehog-2-dqn-after-6-days-4Rly8J' frameborder='0' scrolling='no' width='320px' height='224px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>
 
 Couple of modifications were made to the environment and hyper-parameters were re-tuned:
 
