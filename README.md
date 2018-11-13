@@ -6,7 +6,7 @@ Final project for the course Deep Learning at University of Iceland.
 
 ## Example videos
 Previous version after 10h of training:  
-[![youtube_v1](https://j.gifs.com/4Rly8J.gif)](https://youtu.be/mKLSF36KtOY)
+[![youtube_v1](images/v1.gif)](https://youtu.be/mKLSF36KtOY)
 
 Couple of modifications were made to the environment and hyper-parameters were re-tuned:
 
@@ -15,7 +15,7 @@ chosen action over the next 19 unseen frames.
 
 • The environment terminated after 90 seconds instead of the default 10 minutes.
 Modified version after 48h of training:   
-[![youtube_v2](https://j.gifs.com/jqE9QB.gif)](https://youtu.be/FdN4oRy5g6E)  
+[![youtube_v2](images/v2.gif)](https://youtu.be/FdN4oRy5g6E)  
 
 
 ## Prerequisites
