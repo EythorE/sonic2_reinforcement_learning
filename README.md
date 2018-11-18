@@ -19,12 +19,12 @@ Modified version after 48h of training:
 
 
 ## Prerequisites
-Python 3 
-numpy
-pytorch
-tensorflow
-Gym Retro
-Game ROM of Sonic the Hedghog 2
+Python 3   
+numpy   
+pytorch  
+tensorflow   
+Gym Retro   
+Game ROM of Sonic the Hedghog 2   
 
 ## Running the code
 ...
