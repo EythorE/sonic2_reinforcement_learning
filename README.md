@@ -5,7 +5,7 @@
 Final project for the course Deep Learning at University of Iceland.
 
 ## Example videos
-Previous version after 10h of training:  
+Previous version after 6 days of training:  
 [![youtube_v1](./gifs/v1.gif)](https://youtu.be/FdN4oRy5g6E)  
 
 Couple of modifications were made to the environment and hyper-parameters were re-tuned:
