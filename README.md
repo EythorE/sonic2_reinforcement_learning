@@ -13,7 +13,8 @@ Couple of modifications were made to the environment and hyper-parameters were r
 • The agent is limited to seeing 3 frames out of 60 per second and would play the same
 chosen action over the next 19 unseen frames.
 
-• The environment terminated after 90 seconds instead of the default 10 minutes.
+• The environment terminated after 90 seconds instead of the default 10 minutes.   
+
 Modified version after 48h of training:  
 [![youtube_v2](gifs/v2.gif)](https://youtu.be/mKLSF36KtOY)  
 
