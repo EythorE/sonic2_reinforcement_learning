@@ -1,10 +1,19 @@
 import retro
 import numpy as np
 import tensorflow as tf
+
 import os
 import time
 
+scenario = 'reward.json'
+checkpoint_path = "./checkpoint/my_dqn.ckpt"
+logdir_path = "./logs/1st_train/"
+recordings_path = './recordings'
+
+if not os.path.exists(recordings_path):
+    os.makedirs(recordings_path)
 start_time = time.time()
+
 
 from queue import Queue
 frame_diff_length = 5
@@ -20,10 +29,6 @@ def preprocess_obs(rgb):
     return gray[::2,::2].reshape((112, 160, 1))
 
 
-env = retro.make(game='SonicTheHedgehog2-Genesis', state='EmeraldHillZone.Act1', scenario='custom.json', record=False)#'.')#False)#
-obs = env.reset()
-
-# Build DQN
 input_height = 112
 input_width = 160
 input_channels = 1
@@ -79,10 +84,7 @@ with tf.variable_scope("train"):
     y = tf.placeholder(tf.float32, shape=[None, 1])
     q_value = tf.reduce_sum(online_q_values * tf.one_hot(X_action, n_outputs),
                             axis=1, keepdims=True)
-    error = tf.abs(y - q_value)
-    clipped_error = tf.clip_by_value(error, 0.0, 1.0)
-    linear_error = 2 * (error - clipped_error) #skoða
-    loss = tf.reduce_mean(tf.square(clipped_error) + linear_error) 
+    loss = tf.reduce_mean(tf.square(y - q_value)) 
 
     global_step = tf.Variable(0, trainable=False, name='global_step')
     optimizer = tf.train.MomentumOptimizer(learning_rate, momentum, use_nesterov=True)
@@ -99,14 +101,10 @@ with tf.variable_scope("Episode_summary"):
     summary_endposition = tf.summary.scalar('average_final_xposition', tf_endposition)
     summary_game_length = tf.summary.scalar('average_game_length', tf_game_length)
 
-
 summary = tf.summary.merge([summary_average_reward , summary_games_finished, summary_endposition, summary_game_length ])
-file_writer = tf.summary.FileWriter("./logs/", tf.get_default_graph())
-
+file_writer = tf.summary.FileWriter(logdir_path, tf.get_default_graph())
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
-
-
 
 class ReplayMemory:
     def __init__(self, maxlen):
@@ -145,9 +143,9 @@ eps_decay_steps = 100000
 def epsilon_greedy(q_values, step):
     epsilon = max(eps_min, eps_max - (eps_max-eps_min) * step/eps_decay_steps)
     if np.random.rand() < epsilon:
-        return np.random.randint(n_outputs) # random action
+        return np.random.randint(n_outputs), epsilon # random action
     else:
-        return np.argmax(q_values) # optimal action
+        return np.argmax(q_values), epsilon # optimal action
     
 def action2vec(action):
      actions = np.zeros(12, dtype='int8')
@@ -176,39 +174,39 @@ def action2vec(action):
          actions[6] = 1    
      return actions         
          
-n_training_step = 2200000 # total number of training steps
+n_training_step = 800000 # total number of training steps
 n_action_reapeats = 20 # reapeat action for a number of frames
 training_start = 10000  # start training after 10,000 game iterations
 training_interval = 4  # run a training step every 4 game iterations
 save_steps = 1000  # save the model every 1,000 training steps
 copy_steps = 10000  # copy online DQN to target DQN every 10,000 training steps
 discount_rate = 0.99
-batch_size = 500
+batch_size = 50
+max_episode_duration = 90 # stop episode after number of seconds
 
+# Avarege over episodes for graphing 
+n_episode_average = 100
 
-checkpoint_path = "./checkpoint/my_dqn.ckpt"
-
-
-iteration = 0  # game iterations
+# Variables to track progress
+episodes_played = 0
+iteration = 0
 game_frames = 0
 total_game_frames = 0
 reward = 0
 total_episode_reward = 0
-episodes_played = 0
-
-n_episode_average = 10
-
 cum_game_rewards = 0
 cum_games_finished = 0
 cum_game_endposition = 0
 cum_game_length= 0 
 
+
+env = retro.make(game='SonicTheHedgehog2-Genesis', state='EmeraldHillZone.Act1', scenario=scenario, record=False)
 obs = env.reset()
 state = preprocess_obs(obs)
 done = False
 
 
-# training loop
+# Training loop
 with tf.Session() as sess:
     if os.path.isfile(checkpoint_path + ".index"):
         saver.restore(sess, checkpoint_path)
@@ -218,6 +216,7 @@ with tf.Session() as sess:
         
     
     training_step = global_step.eval()
+    print('Started training at step: ', training_step)
     
     while True:
         if training_step >= n_training_step:
@@ -231,36 +230,34 @@ with tf.Session() as sess:
             cum_games_finished += info['screen_x']>=info['screen_x_end']
             cum_game_endposition += info['screen_x']/info['screen_x_end']
             cum_game_length += game_frames/60 # frames/fps
-            total_episode_reward = 0
+            
 
             if episodes_played % n_episode_average == 0:
                 average_reward = cum_game_rewards/n_episode_average
                 average_games_finished = cum_games_finished/n_episode_average
                 average_game_endposition = cum_game_endposition/n_episode_average
                 average_game_length = cum_game_length/n_episode_average
-
                 tf_episode_summary= sess.run(summary, feed_dict={
                         tf_average_reward: average_reward,
                         tf_games_finished: average_games_finished,
-                        tf_endposition:average_game_endposition,
-                        tf_game_length:average_game_length})
+                        tf_endposition: average_game_endposition,
+                        tf_game_length: average_game_length})
                 file_writer.add_summary(tf_episode_summary, episodes_played)
                 
                 cum_game_rewards = 0
                 cum_games_finished = 0
-                cum_game_maxposition = 0
+                cum_game_endposition = 0
                 cum_game_length = 0
                 
 
             obs = env.reset()
             state = preprocess_obs(obs)
             game_frames = 0
+            total_episode_reward = 0
             
-        # Online DQN evaluates what to do
         q_values = online_q_values.eval(feed_dict={X_state: [state]})
-        action = epsilon_greedy(q_values, training_step)
+        action, epsilon = epsilon_greedy(q_values, training_step)
 
-        # Online DQN plays only switch actions every 20 frames
         reward = 0
         for i in range(n_action_reapeats):
             obs, reward_notseen, done, info = env.step(action2vec(action))
@@ -268,35 +265,31 @@ with tf.Session() as sess:
             total_game_frames +=1
             total_episode_reward += reward_notseen
             reward += reward_notseen/n_action_reapeats
+
+            #env.render() # Watch while training
             
-            #env.render()
-            
-            if done or game_frames > 60*90: # (60 fps)*(x sec)
+            if done or game_frames > 60*max_episode_duration: # (60 fps)*(x sec)
                 done = True
                 break
             
-            
         next_state = preprocess_obs(obs)
-        # Let's memorize what happened
         replay_memory.append((state, action, reward, next_state, 1.0 - done))
         state = next_state
         
-        if iteration%100 == 0:
+        if iteration%1000 == 0:
             print("\rIteration {},\tTraining step {}/{} ({:.1f})%,\tEpisodes played {:.0f},\tReplay memory size: {}, epsilon: {:.2f},\tTotal time {:.0f} min".format(
                         iteration, training_step,
                         n_training_step, training_step*100/n_training_step,
                         episodes_played,
                         replay_memory.length,
-                        max(eps_min,eps_max-(eps_max-eps_min)*training_step/eps_decay_steps),
+                        epsilon,
                         (time.time() - start_time)/60),
                         end="")
 
-        
-
         if iteration < training_start or iteration % training_interval != 0:
-            continue # only train after warmup period and at regular intervals
+            continue # Only if replay memory is sufficent and only every training_interval steps
 
-        # Sample memories and use the target DQN to produce the target Q-Value
+        # Update network
         X_state_val, X_action_val, rewards, X_next_state_val, continues = (
             sample_memories(batch_size))
         next_q_values = target_q_values.eval(
@@ -304,16 +297,13 @@ with tf.Session() as sess:
         max_next_q_values = np.max(next_q_values, axis=1, keepdims=True)
         y_val = rewards + continues * discount_rate * max_next_q_values
 
-        # Train the online DQN
         _, training_step = sess.run([training_op, global_step], feed_dict={
             X_state: X_state_val, X_action: X_action_val, y: y_val})
     
 
-        # Regularly copy the online DQN to the target DQN
         if training_step % copy_steps == 0:
             copy_online_to_target.run()
 
-        # And save regularly
         if training_step % save_steps == 0:
             saver.save(sess, checkpoint_path)
             
@@ -321,17 +311,16 @@ stop_time = time.time()
 total_time = stop_time - start_time
 print('\nTotal training steps: {}, Number of episodes: {}, Total game frames: {} Total time: {}'.format(
         training_step, episodes_played, total_game_frames, total_time))
-
 file_writer.close()
-env.render(close=True)
 env.close()
+# Done Training
 
 # Test network
 record_games = True
-n_episodes = 4
+n_episodes = 1
 
-record = './recordings/' if record_games else False
-env = retro.make(game='SonicTheHedgehog2-Genesis', state='EmeraldHillZone.Act1', scenario='custom.json', record=record)
+record = recordings_path if record_games else False
+env = retro.make(game='SonicTheHedgehog2-Genesis', state='EmeraldHillZone.Act1', scenario=scenario, record=record)
 done = False
 with tf.Session() as sess:
     saver.restore(sess, checkpoint_path)
@@ -340,14 +329,13 @@ with tf.Session() as sess:
         done = False
         while not done:
             state = preprocess_obs(obs)
-    
-            # Online DQN evaluates what to do
             q_values = online_q_values.eval(feed_dict={X_state: [state]})
             for i in range(n_action_reapeats):
-                action = epsilon_greedy(q_values, eps_decay_steps)
+                action, epsilon = epsilon_greedy(q_values, eps_decay_steps)
                 obs, reward, done, info = env.step(action2vec(action))
                 env.render()
                 if done:
                     break
             
-    env.render(close=True)
+env.render(close=True)
+env.close()
