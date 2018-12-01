@@ -1,6 +1,6 @@
 # sonic2_reinforcement_learning
-Deep Learning (RAF117F fall 2018)
-University of Iceland
+Deep Learning (RAF117F fall 2018)  
+University of Iceland  
 Final project for the course Deep Learning at University of Iceland.
 
 ## Example videos
