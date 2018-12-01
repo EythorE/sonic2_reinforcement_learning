@@ -1,7 +1,7 @@
 # sonic2_reinforcement_learning
+Final project for the course,  
 Deep Learning (RAF117F fall 2018)  
 University of Iceland  
-Final project for the course Deep Learning at University of Iceland.
 
 ## Example videos
 Previous version after 6 days of training:  
@@ -42,7 +42,6 @@ Copy roms to some location with extention for system e.g. .md for mega drive, th
 ```
 cp ~/.steam/steam/steamapps/common/'Sega Classics'/'uncompressed ROMs'/SONIC2_W.68K ~/roms/SONIC2_W.md
 python3 -m retro.import ~/roms/
-
 ```
 Run:
 ```
@@ -56,5 +55,5 @@ Eyþór Einarsson
 * [RAF117F, University of Iceland](https://ugla.hi.is/kennsluskra/index.php?sid=&tab=nam&chapter=namskeid&id=70970220186)
 * [UCL Course on RL](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html)
 * [Reinforcement Learning, book by Richard S. Sutton and Andrew G. Barto](http://incompleteideas.net/book/the-book-2nd.html)
-* [Andrew Ng's Deep Learning Specialization on coursera.com] {https://www.coursera.org/specializations/deep-learning?)
+* [Andrew Ng's Deep Learning Specialization on coursera.com](https://www.coursera.org/specializations/deep-learning?)
 
